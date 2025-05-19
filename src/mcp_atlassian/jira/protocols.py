@@ -33,7 +33,7 @@ class IssueOperationsProto(Protocol):
     def get_issue(
         self,
         issue_key: str,
-        expand: str | None = None,
+        expand: str | None = "names",
         comment_limit: int | str | None = 10,
         fields: str
         | list[str]

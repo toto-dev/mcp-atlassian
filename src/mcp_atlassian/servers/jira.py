@@ -104,9 +104,9 @@ async def get_issue(
                 "(Optional) Fields to expand. Examples: 'renderedFields' (for rendered content), "
                 "'transitions' (for available status transitions), 'changelog' (for history)"
             ),
-            default="",
+            default="names",
         ),
-    ] = "",
+    ] = "names",
     comment_limit: Annotated[
         int,
         Field(
@@ -218,9 +218,9 @@ async def search(
             description=(
                 "(Optional) fields to expand. Examples: 'renderedFields', 'transitions', 'changelog'"
             ),
-            default="",
+            default="names",
         ),
-    ] = "",
+    ] = "names",
 ) -> str:
     """Search Jira issues using JQL (Jira Query Language).
 

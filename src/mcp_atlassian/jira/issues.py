@@ -36,7 +36,7 @@ class IssuesMixin(
     def get_issue(
         self,
         issue_key: str,
-        expand: str | None = None,
+        expand: str | None = "names",
         comment_limit: int | str | None = 10,
         fields: str | list[str] | tuple[str, ...] | set[str] | None = None,
         properties: str | list[str] | None = None,

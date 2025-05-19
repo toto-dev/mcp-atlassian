@@ -421,18 +421,24 @@ class JiraIssue(ApiModel, TimestampMixin):
 
         # Store custom fields
         custom_fields = {}
-        for field_id, field_value in fields.items():
-            if field_id.startswith("customfield_"):
+        fields_name_map = data.get("names", {})
+
+        for orig_field_id, orig_field_value in fields.items():
+            if orig_field_id.startswith("customfield_"):
+                field_id = orig_field_id
+                field_value = {'value': orig_field_value}
                 # Extract custom field name if it's a nested object with a name
-                if isinstance(field_value, dict) and "name" in field_value:
-                    field_name = field_value.get("name", "")
+                if isinstance(orig_field_value, dict) and "name" in orig_field_value:
+                    field_name = orig_field_value.get("name", "")
                     if field_name:
                         # Use the field name as a key for easier access
-                        custom_field_name = field_name.lower().replace(" ", "_")
-                        custom_fields[custom_field_name] = field_value
-                else:
-                    # Use the original ID as the key (instead of shortened version)
-                    custom_fields[field_id] = field_value
+                        field_id = field_name
+                        field_value['custom_field_id'] = orig_field_id
+                elif orig_field_id in fields_name_map:
+                    field_id = fields_name_map[orig_field_id]
+                    field_value['custom_field_id'] = orig_field_id
+
+                custom_fields[field_id] = field_value
 
         # Handle requested_fields parameter
         requested_fields_param = kwargs.get("requested_fields")
